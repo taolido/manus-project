@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8bit タイピングゲーム</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Press Start 2P', monospace;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            overflow: hidden;
+            user-select: none;
+        }
+        
+        #gameContainer {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        #gameCanvas {
+            border: 4px solid #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            background: #000;
+        }
+        
+        #ui {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+        }
+        
+        .ui-element {
+            margin-bottom: 10px;
+            font-size: 12px;
+            text-shadow: 2px 2px 0px #000;
+        }
+        
+        #score {
+            color: #ffff00;
+        }
+        
+        #combo {
+            color: #ff6b6b;
+        }
+        
+        #level {
+            color: #4ecdc4;
+        }
+        
+        #startScreen {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 20;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 40px;
+            border-radius: 10px;
+            border: 2px solid #fff;
+        }
+        
+        #startButton {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 14px;
+            padding: 15px 30px;
+            background: #4ecdc4;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.2s;
+        }
+        
+        #startButton:hover {
+            background: #45b7aa;
+            transform: scale(1.05);
+        }
+        
+        #gameOverScreen {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 20;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 40px;
+            border-radius: 10px;
+            border: 2px solid #ff6b6b;
+            display: none;
+        }
+        
+        #restartButton {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 14px;
+            padding: 15px 30px;
+            background: #ff6b6b;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.2s;
+        }
+        
+        #restartButton:hover {
+            background: #ff5252;
+            transform: scale(1.05);
+        }
+        
+        .character-display {
+            position: absolute;
+            bottom: 50px;
+            right: 50px;
+            width: 200px;
+            height: 200px;
+            z-index: 5;
+        }
+        
+        #characterImage {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            image-rendering: pixelated;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+        }
+        
+        @media (max-width: 768px) {
+            #gameCanvas {
+                width: 95vw;
+                height: 60vh;
+            }
+            
+            .character-display {
+                width: 120px;
+                height: 120px;
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            #ui {
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        
+        <div id="ui">
+            <div class="ui-element">スコア: <span id="score">0</span></div>
+            <div class="ui-element">コンボ: <span id="combo">0</span></div>
+            <div class="ui-element">レベル: <span id="level">1</span></div>
+        </div>
+        
+        <div class="character-display">
+            <img id="characterImage" src="character_normal.png" alt="キャラクター">
+        </div>
+        
+        <div id="startScreen">
+            <h1>8bit タイピングゲーム</h1>
+            <p>上から降ってくる文字を<br>タイピングで破壊しよう！</p>
+            <button id="startButton">ゲーム開始</button>
+        </div>
+        
+        <div id="gameOverScreen">
+            <h2>ゲームオーバー</h2>
+            <p>最終スコア: <span id="finalScore">0</span></p>
+            <p>最大コンボ: <span id="maxCombo">0</span></p>
+            <button id="restartButton">もう一度</button>
+        </div>
+    </div>
+    
+    <script src="audio_generator.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
+
